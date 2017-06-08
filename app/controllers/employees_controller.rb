@@ -1,6 +1,6 @@
 class EmployeesController < ApplicationController
   def index
-    @employees = Unirest.get("localhost:3000/api/v1/employees.json").body
+    @employees = Unirest.get("#{ ENV["API_HOST"] }/api/v1/employees.json").body
   end
 
   def new
@@ -9,11 +9,11 @@ class EmployeesController < ApplicationController
 
   def create
     employee = Unirest.post(
-                            "localhost:3000/api/v1/employees.json",
+                            "#{ ENV["API_HOST"] }/api/v1/employees.json",
                             headers: {
                                       "Accept" => "application/json"
                                       },
-                            params: {
+                            parameters: {
                                      first_name: params[:first_name],
                                      last_name: params[:last_name],
                                      email: params[:email]
@@ -24,20 +24,20 @@ class EmployeesController < ApplicationController
   end
 
   def show
-    @employee = Unirest.get("localhost:3000/api/v1/employees/#{params[:id]}.json").body
+    @employee = Employee.new(Unirest.get("#{ ENV["API_HOST"] }/api/v1/employees/#{params[:id]}.json").body)
   end
 
   def edit
-    @employee = Unirest.get("localhost:3000/api/v1/employees/#{params[:id]}.json").body
+    @employee = Unirest.get("#{ ENV["API_HOST"] }/api/v1/employees/#{params[:id]}.json").body
   end
 
   def update
     employee = Unirest.patch(
-                            "localhost:3000/api/v1/employees/#{params["id"]}.json",
+                            "#{ ENV["API_HOST"] }/api/v1/employees/#{params["id"]}.json",
                             headers: {
                                       "Accept" => "application/json"
                                       },
-                            params: {
+                            parameters: {
                                      first_name: params[:first_name],
                                      last_name: params[:last_name],
                                      email: params[:email]
@@ -49,7 +49,7 @@ class EmployeesController < ApplicationController
 
   def destroy
     Unirest.delete(
-                   "localhost:3000/api/v1/employees/#{params["id"]}.json",
+                   "#{ ENV["API_HOST"] }/api/v1/employees/#{params["id"]}.json",
                    headers: {
                              "Accept" => "application/json"
                              }
